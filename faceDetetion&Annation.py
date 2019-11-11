@@ -18,7 +18,8 @@ intisar_face_encoding = face_recognition.face_encodings(intisar_image)[0]
 
 known_face_encodings = [
     foysal_face_encoding,
-    zillur_face_encoding
+    zillur_face_encoding,
+    intisar_face_encoding
 ]
 known_face_names = [
     "Foysal",
