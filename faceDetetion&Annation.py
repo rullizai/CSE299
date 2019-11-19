@@ -1,9 +1,14 @@
 import face_recognition
 import cv2
 import numpy as np
+import requests, os, re
 
 
 video_capture = cv2.VideoCapture(0)
+
+known_face_encodings = []
+known_face_names = []
+known_faces_filenames = []
 
 
 #foysal_image = face_recognition.load_image_file("pictures/foysal.jpg")
@@ -35,7 +40,6 @@ for filename in known_faces_filenames:
     face = face_recognition.load_image_file('pictures/' + filename)
     known_face_names.append(re.sub("[0-9]",'', filename[:-4]))
     known_face_encodings.append(face_recognition.face_encodings(face)[0])
-
 
 face_locations = []
 face_encodings = []
