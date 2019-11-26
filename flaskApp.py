@@ -183,7 +183,7 @@ def add_employee():
         print(request.form['nameOfEmployee'])
 
         # Store it in the folder of the know faces:
-        file_path = os.path.join(f"assets/img/users/{request.form['nameOfEmployee']}.jpg")
+        file_path = os.path.join(f"pictures/{request.form['nameOfEmployee']}.jpg")
         image_file.save(file_path)
         answer = 'new employee succesfully added'
     except:
@@ -198,7 +198,7 @@ def get_employee_list():
 
     # Walk in the user folder to get the user list
     walk_count = 0
-    for file_name in os.listdir(f"{FILE_PATH}/assets/img/users/"):
+    for file_name in os.listdir(f"{FILE_PATH}/pictures/"):
         # Capture the employee's name with the file's name
         name = re.findall("(.*)\.jpg", file_name)
         if name:
@@ -214,7 +214,7 @@ def delete_employee(name):
     try:
         
         print('name: ', name)
-        file_path = os.path.join(f'assets/img/users/{name}.jpg')
+        file_path = os.path.join(f'pictures/{name}.jpg')
         os.remove(file_path)
         answer = 'Employee succesfully removed'
     except:
