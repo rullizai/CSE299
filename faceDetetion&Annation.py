@@ -64,6 +64,17 @@ while True:
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
                 name = known_face_names[best_match_index]
+                
+                json_to_export['name'] = name
+                json_to_export['hour'] = f'{time.localtime().tm_hour}:{time.localtime().tm_min}'
+                json_to_export['date'] = f'{time.localtime().tm_year}-{time.localtime().tm_mon}-{time.localtime().tm_mday}'
+                json_to_export['picture_array'] = frame.tolist()
+
+                # * ---------- SEND data to API --------- *
+
+
+                r = requests.post(url='http://127.0.0.1:5000/receive_data', json=json_to_export)
+                print("Status: ", r.status_code)
 
             face_names.append(name)
 
