@@ -3,34 +3,33 @@ import cv2
 import numpy as np
 import requests, os, re
 
-
-video_capture = cv2.VideoCapture(0)
+# video_capture = cv2.VideoCapture('rtsp://192.168.0.100:8080/h264_ulaw.sdp')
+video_capture = cv2.VideoCapture('http://192.168.0.100:8080/video')
 
 known_face_encodings = []
 known_face_names = []
 known_faces_filenames = []
 
+# foysal_image = face_recognition.load_image_file("pictures/foysal.jpg")
+# foysal_face_encoding = face_recognition.face_encodings(foysal_image)[0]
 
-#foysal_image = face_recognition.load_image_file("pictures/foysal.jpg")
-#foysal_face_encoding = face_recognition.face_encodings(foysal_image)[0]
 
+# zillur_image = face_recognition.load_image_file("pictures/zillur.jpg")
+# zillur_face_encoding = face_recognition.face_encodings(zillur_image)[0]
 
-#zillur_image = face_recognition.load_image_file("pictures/zillur.jpg")
-#zillur_face_encoding = face_recognition.face_encodings(zillur_image)[0]
+# intisar_image = face_recognition.load_image_file("pictures/intisar.jpg")
+# intisar_face_encoding = face_recognition.face_encodings(intisar_image)[0]
 
-#intisar_image = face_recognition.load_image_file("pictures/intisar.jpg")
-#intisar_face_encoding = face_recognition.face_encodings(intisar_image)[0]
-
-#known_face_encodings = [
+# known_face_encodings = [
 #    foysal_face_encoding,
 #    zillur_face_encoding,
 #    intisar_face_encoding
-#]
-#known_face_names = [
+# ]
+# known_face_names = [
 #   "Foysal",
 #   "Zillur",
 #    "Intisar"
-#]
+# ]
 
 for (dirpath, dirnames, filenames) in os.walk('pictures/'):
     known_faces_filenames.extend(filenames)
@@ -38,7 +37,7 @@ for (dirpath, dirnames, filenames) in os.walk('pictures/'):
 
 for filename in known_faces_filenames:
     face = face_recognition.load_image_file('pictures/' + filename)
-    known_face_names.append(re.sub("[0-9]",'', filename[:-4]))
+    known_face_names.append(re.sub("[0-9]", '', filename[:-4]))
     known_face_encodings.append(face_recognition.face_encodings(face)[0])
 
 face_locations = []
@@ -53,8 +52,8 @@ while True:
     rgb_small_frame = small_frame[:, :, ::-1]
 
     if process_this_frame:
-        face_locations = face_recognition.face_locations(rgb_small_frame)
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+        face_locations = face_recognition.face_locations(small_frame)
+        face_encodings = face_recognition.face_encodings(small_frame, face_locations)
 
         face_names = []
         for face_encoding in face_encodings:
@@ -69,7 +68,6 @@ while True:
             face_names.append(name)
 
     process_this_frame = not process_this_frame
-
 
     for (top, right, bottom, left), name in zip(face_locations, face_names):
         top *= 4
