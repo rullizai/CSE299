@@ -20,7 +20,7 @@ const VideoFeed = () => {
 `
     return (
             <VideoFeedSection className='some-space'>
-				<h2>Video Feed - classroom 1</h2>
+				<h2>Video Feed</h2>
                 <iframe allowFullScreen
                         title = 'camera feed'
                         webkitallowfullscreen

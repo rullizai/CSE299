@@ -26,7 +26,7 @@ function App() {
 
 	return(
 		<Fragment>
-			<TitleOne>Late Checker</TitleOne>
+			<TitleOne>React App</TitleOne>
 			<MainContainer>
 				<VideoFeed />
 				<SearchBar />
