@@ -5,6 +5,7 @@ import psycopg2
 import cv2
 import numpy as np
 import re
+from flask_mysqldb import MySQL
 
 
 # Get the relativ path to this file (we will use it later)
@@ -22,16 +23,23 @@ CORS(app, support_credentials=True)
 #DATABASE_HOST = os.environ['DATABASE_HOST']
 #DATABASE_PORT = os.environ['DATABASE_PORT']
 #DATABASE_NAME = os.environ['DATABASE_NAME']
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = '1234'
+app.config['MYSQL_DB'] = 'CSE299'
 
-def DATABASE_CONNECTION():
-    return psycopg2.connect(user=postgres,
-                              password=1234,
-                              host='127.0.01',
-                              port=5432,
-                              database=CSE299)
+mysql = MySQL(app)
+
+"""
+#def DATABASE_CONNECTION():
+#    return psycopg2.connect(user=postgres,
+#                              password=1234,
+#                             host='127.0.01',
+#                              port=5432,
+#                              database=CSE299)
 
 
-
+"""
 
 # * ---------- Get data from the face recognition ---------- *
 @app.route('/receive_data', methods=['POST'])
@@ -42,7 +50,8 @@ def get_receive_data():
         # Check if the user is already in the DB
         try:
             # Connect to the DB
-            connection = DATABASE_CONNECTION()
+            
+            connection = mysql.connect()
             cursor = connection.cursor()
 
             # Query to check if the user as been saw by the camera today
@@ -101,7 +110,7 @@ def get_employee(name):
     # Check if the user is already in the DB
     try:
         # Connect to DB
-        connection = DATABASE_CONNECTION()
+        connection = mysql.connect()
         cursor = connection.cursor()
         # Query the DB to get all the data of a user:
         user_information_sql_query = f"SELECT * FROM users WHERE name = '{name}'"
@@ -122,7 +131,7 @@ def get_employee(name):
         else:
             answer_to_send = {'error': 'User not found...'}
 
-    except (Exception, psycopg2.DatabaseError) as error:
+    except (Exception, mysql.DatabaseError) as error:
         print("ERROR DB: ", error)
     finally:
         # closing database connection:
@@ -141,7 +150,7 @@ def get_5_last_entries():
     # Check if the user is already in the DB
     try:
         # Connect to DB
-        connection = DATABASE_CONNECTION()
+        connection = mysql.connect()
 
         cursor = connection.cursor()
         # Query the DB to get all the data of a user:
@@ -161,7 +170,7 @@ def get_5_last_entries():
         else:
             answer_to_send = {'error': 'error detect'}
 
-    except (Exception, psycopg2.DatabaseError) as error:
+    except (Exception, mysql.DatabaseError) as error:
         print("ERROR DB: ", error)
     finally:
         # closing database connection:
