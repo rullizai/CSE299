@@ -2,6 +2,7 @@ import face_recognition
 import cv2
 import numpy as np
 import requests, os, re
+import time
 
 # video_capture = cv2.VideoCapture('rtsp://192.168.0.100:8080/h264_ulaw.sdp')
 video_capture = cv2.VideoCapture('http://192.168.0.100:8080/video')
@@ -56,16 +57,17 @@ while True:
         face_encodings = face_recognition.face_encodings(small_frame, face_locations)
 
         face_names = []
+        json_to_export = {}
         for face_encoding in face_encodings:
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-            name = "Unknown"
+            sname = "Unknown"
 
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
-                name = known_face_names[best_match_index]
-                
-                json_to_export['name'] = name
+                sname = known_face_names[best_match_index]
+                #json=json_to_export
+                json_to_export['name'] = sname
                 json_to_export['hour'] = f'{time.localtime().tm_hour}:{time.localtime().tm_min}'
                 json_to_export['date'] = f'{time.localtime().tm_year}-{time.localtime().tm_mon}-{time.localtime().tm_mday}'
                 json_to_export['picture_array'] = frame.tolist()
@@ -76,11 +78,11 @@ while True:
                 r = requests.post(url='http://127.0.0.1:5000/receive_data', json=json_to_export)
                 print("Status: ", r.status_code)
 
-            face_names.append(name)
+            face_names.append(sname)
 
     process_this_frame = not process_this_frame
 
-    for (top, right, bottom, left), name in zip(face_locations, face_names):
+    for (top, right, bottom, left), sname in zip(face_locations, face_names):
         top *= 4
         right *= 4
         bottom *= 4
@@ -90,7 +92,7 @@ while True:
 
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        cv2.putText(frame, sname, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
     cv2.imshow('Video', frame)
 

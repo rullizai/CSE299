@@ -26,7 +26,7 @@ CORS(app, support_credentials=True)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
-app.config['MYSQL_DB'] = 'CSE299'
+app.config['MYSQL_DB'] = 'cse299'
 
 mysql = MySQL(app)
 
@@ -37,6 +37,16 @@ mysql = MySQL(app)
 #                             host='127.0.01',
 #                              port=5432,
 #                              database=CSE299)
+
+CREATE TABLE users (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+sname VARCHAR(30) NOT NULL,
+sdate DATE NOT NULL,
+arrival_time TIMESTAMP,
+arrival_picture VARCHAR(30),
+departure_time TIMESTAMP,
+departure_picture VARCHAR(255)
+);
 
 
 """
@@ -85,7 +95,7 @@ def get_receive_data():
                 json_data['picture_path'] = image_path
 
                 # Create a new row for the user today:
-                insert_user_querry = f"INSERT INTO users (name, date, arrival_time, arrival_picture) VALUES ('{json_data['name']}', '{json_data['date']}', '{json_data['hour']}', '{json_data['picture_path']}')"
+                insert_user_querry = f"INSERT INTO users (sname, sdate, arrival_time, arrival_picture) VALUES ('{json_data['name']}', '{json_data['date']}', '{json_data['hour']}', '{json_data['picture_path']}')"
                 cursor.execute(insert_user_querry)
 
         except (Exception, psycopg2.DatabaseError) as error:
@@ -113,7 +123,7 @@ def get_employee(name):
         connection = mysql.connect()
         cursor = connection.cursor()
         # Query the DB to get all the data of a user:
-        user_information_sql_query = f"SELECT * FROM users WHERE name = '{name}'"
+        user_information_sql_query = f"SELECT * FROM users WHERE sname = '{name}'"
 
         cursor.execute(user_information_sql_query)
         result = cursor.fetchall()
