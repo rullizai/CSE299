@@ -70,7 +70,7 @@ def get_receive_data():
 
             cur.execute(user_saw_today_sql_query)
             result = cur.fetchall()
-            mysqlconnection.commit()
+            mysql.connection.commit()
 
             # If use is already in the DB for today:
             if result:
@@ -125,8 +125,8 @@ def get_employee(name):
         user_information_sql_query = f"SELECT * FROM users WHERE sname = '{name}'"
 
         cur.execute(user_information_sql_query)
-        mysql.result = cur.fetchall()
-        connection.commit()
+        result = cur.fetchall()
+        mysql.connection.commit()
 
         # if the user exist in the db:
         if result:
