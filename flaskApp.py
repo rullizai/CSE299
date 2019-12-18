@@ -61,16 +61,16 @@ def get_receive_data():
         try:
             # Connect to the DB
             
-            connection = mysql.connect()
-            cursor = connection.cursor()
+            cur = mysql.connection.cursor()
+            #cur = connection.cursor()
 
             # Query to check if the user as been saw by the camera today
             user_saw_today_sql_query =\
                 f"SELECT * FROM users WHERE date = '{json_data['date']}' AND name = '{json_data['name']}'"
 
-            cursor.execute(user_saw_today_sql_query)
-            result = cursor.fetchall()
-            connection.commit()
+            cur.execute(user_saw_today_sql_query)
+            result = cur.fetchall()
+            mysqlconnection.commit()
 
             # If use is already in the DB for today:
             if result:
@@ -96,18 +96,18 @@ def get_receive_data():
 
                 # Create a new row for the user today:
                 insert_user_querry = f"INSERT INTO users (sname, sdate, arrival_time, arrival_picture) VALUES ('{json_data['name']}', '{json_data['date']}', '{json_data['hour']}', '{json_data['picture_path']}')"
-                cursor.execute(insert_user_querry)
+                cur.execute(insert_user_querry)
 
-        except (Exception, psycopg2.DatabaseError) as error:
+        except (Exception, mysql.DatabaseError) as error:
             print("ERROR DB: ", error)
         finally:
-            connection.commit()
+            mysql.connection.commit()
 
             # closing database connection.
-            if connection:
-                cursor.close()
-                connection.close()
-                print("PostgreSQL connection is closed")
+            if (mysql.connection()):
+            cur.close()
+            mysql.connection.close()
+                print("MySQL connection is closed")
 
         # Return user's data to the front
         return jsonify(json_data)
@@ -120,13 +120,12 @@ def get_employee(name):
     # Check if the user is already in the DB
     try:
         # Connect to DB
-        connection = mysql.connect()
-        cursor = connection.cursor()
+        cur = mysql.connection.cursor()
         # Query the DB to get all the data of a user:
         user_information_sql_query = f"SELECT * FROM users WHERE sname = '{name}'"
 
-        cursor.execute(user_information_sql_query)
-        result = cursor.fetchall()
+        cur.execute(user_information_sql_query)
+        mysql.result = cur.fetchall()
         connection.commit()
 
         # if the user exist in the db:
@@ -145,9 +144,9 @@ def get_employee(name):
         print("ERROR DB: ", error)
     finally:
         # closing database connection:
-        if (connection):
-            cursor.close()
-            connection.close()
+        if (mysql.connection()):
+            cur.close()
+            mysql.connection.close()
 
     # Return the user's data to the front
     return jsonify(answer_to_send)
@@ -160,15 +159,13 @@ def get_5_last_entries():
     # Check if the user is already in the DB
     try:
         # Connect to DB
-        connection = mysql.connect()
-
-        cursor = connection.cursor()
+        cur = mysql.connection.cursor()
         # Query the DB to get all the data of a user:
         lasts_entries_sql_query = f"SELECT * FROM users ORDER BY id DESC LIMIT 5;"
 
-        cursor.execute(lasts_entries_sql_query)
-        result = cursor.fetchall()
-        connection.commit()
+        cur.execute(lasts_entries_sql_query)
+        result = cur.fetchall()
+        mysql.connection.commit()
 
         # if DB is not empty:
         if result:
@@ -184,9 +181,9 @@ def get_5_last_entries():
         print("ERROR DB: ", error)
     finally:
         # closing database connection:
-        if (connection):
-            cursor.close()
-            connection.close()
+        if (mysql.connection()):
+            cur.close()
+            mysql.connection.close()
 
     # Return the user's data to the front
     return jsonify(answer_to_send)
