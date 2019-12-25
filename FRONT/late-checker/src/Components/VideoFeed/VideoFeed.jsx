@@ -26,7 +26,7 @@ const VideoFeed = () => {
                         webkitallowfullscreen
                         mozallowfullscreen
 			// !!! TO CHANGE !!!
-                        src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwik17irtsHmAhVFXSsKHQnNAu8QjRx6BAgBEAQ&url=https%3A%2F%2Fwww.facebook.com%2FRoyalCCC.jo%2Fphotos%2F&psig=AOvVaw0gXJVHoEkBWG-28d3l7bDP&ust=1576835018541497"
+                        src=""
                         frameBorder="0"
                         width="100%"
                         height="576" />
