@@ -84,7 +84,7 @@ def get_receive_data():
 
                 # Update user in the DB
                update_user_querry = f"UPDATE users SET departure_time = '{json_data['hour']}', departure_picture = '{json_data['picture_path']}' WHERE name = '{json_data['name']}' AND date = '{json_data['date']}'"
-               cursor.execute(update_user_querry)
+               cur.execute(update_user_querry)
 
             else:
                 print("user OUT")
@@ -105,8 +105,8 @@ def get_receive_data():
 
             # closing database connection.
             if (mysql.connection()):
-            cur.close()
-            mysql.connection.close()
+                cur.close()
+                mysql.connection.close()
                 print("MySQL connection is closed")
 
         # Return user's data to the front
