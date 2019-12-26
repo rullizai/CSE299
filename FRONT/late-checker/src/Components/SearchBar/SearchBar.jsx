@@ -93,10 +93,10 @@ const SearchBar = props => {
 
     return (
             <SearchSection>
-				<h2>Search for a employee</h2>
+				<h2>Search for an employee</h2>
                 <SearchContainer>
                     <FormDiv>
-                        <SearchInput name='searchForEmployee' id='searchForEmployee' placeholder='Jonh Doe' type="text"/>
+                        <SearchInput name='searchForEmployee' id='searchForEmployee' placeholder='Type Name Please' type="text"/>
                         <SearchButton onClick={ searchForEmployee } id='searchButton'>Search</SearchButton>
                     </FormDiv>
                     <AnswerDiv>

@@ -25,7 +25,7 @@ const VideoFeed = () => {
                         title = 'camera feed'
                         webkitallowfullscreen
                         mozallowfullscreen
-			// !!! TO CHANGE !!!
+			
                         src=""
                         frameBorder="0"
                         width="100%"
